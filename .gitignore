@@ -22,6 +22,9 @@
 # Ignore all logfiles and tempfiles.
 database.db
 
+# Ingore coverage
+/coverage
+
 # Ignore frontend build & log file
 /node_modules
 !/node_modules/.keep

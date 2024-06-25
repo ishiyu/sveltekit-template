@@ -5,8 +5,8 @@ sveltekit を始めるときのテンプレートとして利用したい。
 ## setup libraries
 
 - pnpm with corepack
-- svelte
-- sveltekit
+- Lefthook (nearly husky)
+- svelte & sveltekit
 - biome
 - vite
 - vitest

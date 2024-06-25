@@ -1,11 +1,11 @@
-name: "Auto Testing for frontend vite"
+name: "Auto Testing for sveltekit"
 
 on:
   push:
     branches-ignore:
       - 'develop'
     paths:
-      - '.github/workflows/auto_testing.yml'
+      - '.github/workflows/auto-testing.yml'
       - 'src/**'
 
 permissions:

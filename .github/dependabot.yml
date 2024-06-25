@@ -1,0 +1,23 @@
+# Basic `dependabot.yml` file with
+# minimum configuration for two package managers
+
+version: 2
+
+updates:
+  # Enable version updates for npm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: daily
+      timezone: Asia/Tokyo
+    groups:
+      dependencies:
+        dependency-type: production
+      devDependencies:
+        dependency-type: development
+
+  # Enable version updates for Docker
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"

@@ -13,7 +13,7 @@ permissions:
   contents: read # actions/checkout のために必要
 
 jobs:
-  frontend-test:
+  auto-testing:
     runs-on: ubuntu-latest
 
     # yarn network cache の保存先を指定しておく
@@ -47,7 +47,7 @@ jobs:
           version: latest
 
       - name: enable corepack
-      - run: |
+        run: |
           corepack install
 
       - name: echo information

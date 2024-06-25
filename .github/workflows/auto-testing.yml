@@ -69,16 +69,16 @@ jobs:
 
       - name: typescript type check
         run: |
-          pnpm run tsc
+          pnpm tsc
         timeout-minutes: 3
 
       - name: lint&format with Biome
-        run: biome ci .
+        run: pnpm biome ci ./src
         timeout-minutes: 3
 
       - name: test with vitest
         run: |
-          pnpm run test
+          pnpm run test:coverage
         timeout-minutes: 3
 
       # # slack 通知

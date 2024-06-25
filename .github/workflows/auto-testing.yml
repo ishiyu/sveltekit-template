@@ -1,0 +1,101 @@
+name: "Auto Testing for frontend vite"
+
+on:
+  push:
+    branches-ignore:
+      - 'develop'
+    paths:
+      - '.github/workflows/auto_testing.yml'
+      - 'src/**'
+
+permissions:
+  id-token: write # OIDC を利用する際に必須
+  contents: read # actions/checkout のために必要
+
+jobs:
+  frontend-test:
+    runs-on: ubuntu-latest
+
+    # yarn network cache の保存先を指定しておく
+    # https://blog.lacolaco.net/2021/06/github-actions-yarn-cache/
+    env:
+      YARN_CACHE_FOLDER: .cache/yarn-frontend
+      NODE_OPTIONS: --max_old_space_size=4096
+
+    steps:
+      # https://github.com/marketplace/actions/setup-elasticsearch
+      # swapoff なんてしていいのかなぁ...
+      - name: Configure sysctl limits
+        run: |
+          sudo swapoff -a
+          sudo sysctl -w vm.swappiness=1
+          sudo sysctl -w fs.file-max=262144
+          sudo sysctl -w vm.max_map_count=262144
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js for use with actions
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: "pnpm"
+
+      - name: Setup Biome
+        uses: biomejs/setup-biome@v2
+        with:
+          version: latest
+
+      - name: enable corepack
+      - run: |
+          corepack install
+
+      - name: echo information
+        run: |
+          echo "node version $(node -v) running"
+          echo "corepack version $(corepack -v) running"
+          echo "pnpm version $(pnpm -v) running"
+
+      # pnpm のキャッシュディレクトリを取得
+      - id: pnpm
+        run: echo "cache-dir=$(pnpm store path)" >> $GITHUB_OUTPUT
+      # キャッシュをリストア
+      - uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm.outputs.cache-dir }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - name: install node_modules with pnpm
+        run: |
+          pnpm install --frozen-lockfile
+        timeout-minutes: 3
+
+      - name: typescript type check
+        run: |
+          pnpm run tsc
+        timeout-minutes: 3
+
+      - name: lint&format with Biome
+        run: biome ci .
+        timeout-minutes: 3
+
+      - name: test with vitest
+        run: |
+          pnpm run test
+        timeout-minutes: 3
+
+      # # slack 通知
+      # - name: notify to slack
+      #   uses: 8398a7/action-slack@v3
+      #   if: failure()
+      #   with:
+      #     status: ${{ job.status }}
+      #     author_name: "Auto Testing: frontend-vite-test"
+      #     icon_emoji: ':octocat:'
+      #     username: 'GitHub Actions'
+      #     channel: '#github-actions'
+      #     fields: repo,message,commit,author,action,job,took,eventName,ref,workflow,workflowRun,pullRequest
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}

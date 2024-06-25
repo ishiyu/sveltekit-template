@@ -1,0 +1,52 @@
+services:
+  db:
+    image: postgres
+    # dbのユーザー名とパスワードでこれが無いとdbが起動できなかった
+    environment:
+      TZ: Asia/Tokyo
+      POSTGRES_DB: mydb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    # 無くても動くが指定しておくとコンテナ停止時にサービスが再起動してくれる
+    # https://docs.docker.jp/v19.03/config/container/start-containers-automatically.html
+    restart: always
+
+  redis:
+    image: redis:7.2.5-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+  web:
+    build:
+      dockerfile: containers/development/Dockerfile
+    command: bash -c "pnpm run dev"
+    environment:
+      DEV_SERVER_HOST: "0.0.0.0"
+      HOST: "0.0.0.0"
+      PORT: 5173
+      POSTGRESQL_URL: "postgresql://postgres:password@db:5432/mydb?schema=public"
+      REDIS_URL: "redis://redis:6379/0"
+    volumes:
+      - .:/appuser:delegated
+      # 以下のディレクトリはマウントしない
+      - node_modules:/appuser/node_modules
+      - git:/appuser/.git
+    ports:
+      - "5173:5173"
+      - "5555:5555"  # for prisma client
+    restart: always  # コンテナが停止すると常に再起動
+    tty: true        # 疑似ターミナル (pseudo-TTY) を割り当て
+    stdin_open: true # サービス コンテナに標準入力を割り当てて実行するよう設定
+    depends_on:
+      - db
+      - redis
+
+volumes:
+  db-data:
+  redis-data:
+  node_modules:
+  git:

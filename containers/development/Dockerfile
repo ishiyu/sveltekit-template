@@ -1,8 +1,8 @@
-FROM node:lts-slim
+FROM node:lts-slim AS base
 ENV NODE_ENV=development
-
-# Svelte app lives here
-WORKDIR /app
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable pnpm
 
 # Install packages needed for deployment
 RUN apt-get update -qq && \
@@ -12,20 +12,23 @@ RUN apt-get update -qq && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Install node modules
-#COPY ../../prisma ./prisma/
+WORKDIR /app
+COPY ["../../package.json", "../../pnpm-lock.yaml", "/app"]
 
-# Clean install
-COPY ["../../package.json", "../../pnpm-lock.yaml", "./"]
-RUN corepack enable pnpm
-RUN pnpm install --frozen-lockfile
+FROM base AS prod-deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --ignore-scripts
 
-# generate prisma client code
-#RUN npx prisma generate --schema ./prisma/postgresql/schema.prisma
+FROM base
+COPY --from=prod-deps /app/node_modules /app/node_modules
 
 # Copy application code (ignore node_modules)
 COPY ../../src ./src
+COPY ../../prisma  ./prisma
 COPY ../../static ./static
 COPY ../../* .
+
+# generate prisma client code
+RUN pnpm prisma generate --schema ./prisma/schema.prisma
 
 # Run and own only the runtime files as a non-root user for security
 RUN useradd appuser --create-home --shell /bin/bash && \

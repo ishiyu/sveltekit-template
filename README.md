@@ -7,6 +7,7 @@ sveltekit を始めるときのテンプレートとして利用したい。
 - pnpm with corepack
 - Lefthook (nearly husky)
 - svelte & sveltekit
+- prisma with postgresql
 - biome
 - vite
 - vitest
@@ -19,10 +20,34 @@ and github actions for CI.
 Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
 ```bash
-npm run dev
+docker-compose build
+docker-compose up -d
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+```
+
+## Library update
+
+```bash
+docker-compose build
+docker-compose up -d
+
+```
+
+## DB Migrate
+
+```bash
+docker-compose exec web bash
+
+pnpm prisma migrate dev
+```
+
+## Connect DB with psql
+
+```bash
+docker-compose exec db bash
+
+psql -d mydb -U postgres
+
 ```
 
 ## Building

@@ -1,6 +1,8 @@
 services:
   db:
     image: postgres
+    ports:
+      - "5432:5432" # host からでもDBを見れるようにしておく
     # dbのユーザー名とパスワードでこれが無いとdbが起動できなかった
     environment:
       TZ: Asia/Tokyo
@@ -31,10 +33,10 @@ services:
       POSTGRESQL_URL: "postgresql://postgres:password@db:5432/mydb?schema=public"
       REDIS_URL: "redis://redis:6379/0"
     volumes:
-      - .:/appuser:delegated
+      - .:/app:delegated
       # 以下のディレクトリはマウントしない
-      - node_modules:/appuser/node_modules
-      - git:/appuser/.git
+      - node_modules:/app/node_modules
+      - git:/app/.git
     ports:
       - "5173:5173"
       - "5555:5555"  # for prisma client

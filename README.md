@@ -15,7 +15,8 @@ sveltekit を始めるときのテンプレートとして利用したい。
 - [x] [vite](https://ja.vitejs.dev/)
 - [ ] unit test with [vitest](https://vitest.dev/)
 - [x] github actions for CI
-- [ ] deployment for Vercel
+- [x] deployment for Vercel
+  - [x] setup [Vercel SpeedInsight](https://github.com/vercel/speed-insights)
   - [ ] github actions for CD
 
 ## Library update

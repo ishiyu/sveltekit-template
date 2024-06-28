@@ -17,7 +17,7 @@ sveltekit を始めるときのテンプレートとして利用したい。
 - [x] github actions for CI
 - [x] deployment for Vercel
   - [x] setup [Vercel SpeedInsight](https://github.com/vercel/speed-insights)
-  - [ ] github actions for CD
+  - [x] CD is auto setup when first deployed (when pushed main branch)
 
 ## Library update
 
@@ -52,19 +52,12 @@ psql -d mydb -U postgres
 To create a production version of your app:
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 ## Deploying Vercel
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+First deploy is reference this site.
+https://qiita.com/Notta_Engineering/items/1db3a14be8caa9a63ab2
 
-```bash
-docker-compose build
-docker-compose up -d
-
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+And after pushing to the main branch, it is automatically deployed to Vercel.

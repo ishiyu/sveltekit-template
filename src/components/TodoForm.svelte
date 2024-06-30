@@ -1,5 +1,5 @@
 <script>
-  import { addTodo } from "$lib/client/stores/todoStore";
+  import { todoStore } from "$lib/client/stores/todoStore";
 
   let todo = '';
   const handleSubmit = () => {
@@ -8,7 +8,7 @@
           todo = '';
           return alert('Please enter a todo as required!');
       }
-      addTodo(todo);
+      todoStore.add(todo);
       todo = '';
   };
 </script>

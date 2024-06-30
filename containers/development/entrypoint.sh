@@ -2,6 +2,8 @@
 set -e
 
 corepack install
+pnpm config set store-dir /pnpm/.pnpm-store
+pnpm i --frozen-lockfile --ignore-scripts
 
 # Cannot find module @rollup/rollup-linux-arm64-gnu.
 # npm has a bug related to optional dependencies (https://github.com/npm/cli/issues/4828).

@@ -5,4 +5,6 @@ import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 injectSpeedInsights();
 </script>
 
-<slot></slot>
+<div class="container mx-auto my-6 max-w-lg">
+  <slot />
+</div>

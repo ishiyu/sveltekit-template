@@ -35,9 +35,7 @@
       "type": "shell",
       "label": "tsc watch",
       "command": "./node_modules/.bin/tsc",
-      "args": [
-        "--watch"
-      ],
+      "args": ["--watch"],
       "presentation": {
         "echo": true,
         "reveal": "never",

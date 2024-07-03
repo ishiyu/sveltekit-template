@@ -10,7 +10,7 @@ sveltekit を始めるときのテンプレートとして利用したい。
 - [x] svelte & sveltekit
 - [x] [prisma](https://github.com/prisma) with postgresql
 - [x] request API with [ky](https://github.com/sindresorhus/ky)
-- [ ] validate with [valibot](https://valibot.dev/)
+- [x] validate with [valibot](https://valibot.dev/)
 - [x] [biome](https://biomejs.dev/)
 - [x] [vite](https://ja.vitejs.dev/)
 - [ ] unit test with [vitest](https://vitest.dev/)
@@ -18,9 +18,10 @@ sveltekit を始めるときのテンプレートとして利用したい。
 - [x] deployment for Vercel
   - [x] setup [Vercel SpeedInsight](https://github.com/vercel/speed-insights)
   - [x] CD is auto setup when first deployed (when pushed main branch)
+  - [x] auto migrate to Vercel Postgres
 
 - [ ] save local storage
-- [ ] input -> validation -> request -> | -> validation -> execute db -> response
+- [x] input -> validation -> request -> | -> validation -> execute db -> response
 
 ## Library update
 

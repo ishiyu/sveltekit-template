@@ -1,15 +1,18 @@
-<script>
+<script lang="ts">
   import { todoStore } from "$lib/client/stores/todoStore";
+  import { TodoCreateSchema } from "$lib/schema/TodoSchema";
+  import * as v from "valibot";
 
-  let todo = '';
-  const handleSubmit = () => {
-      // console.log('Submitting...');
-      if (todo === '') {
-          todo = '';
-          return alert('Please enter a todo as required!');
-      }
-      todoStore.add(todo);
-      todo = '';
+  const inputTodo = { body: '' };
+  const handleSubmit = async () => {
+    try {
+      const validData = v.parse(TodoCreateSchema, inputTodo);
+      await todoStore.add(validData.body);
+      // 消しておく
+      inputTodo.body = '';
+    } catch (e) {
+        if (v.isValiError(e)) alert(e.message);
+    }
   };
 </script>
 
@@ -19,7 +22,7 @@
       <input
           type="text"
           name="todo"
-          bind:value={todo}
+          bind:value={inputTodo.body}
           placeholder="What's on your mind?"
           class="appearance-none shadow-sm border border-gray-200 p-2 focus:outline-none focus:border-gray-500 rounded-lg"
       />

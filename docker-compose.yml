@@ -30,7 +30,13 @@ services:
       DEV_SERVER_HOST: "0.0.0.0"
       HOST: "0.0.0.0"
       PORT: 5173
-      POSTGRESQL_URL: "postgresql://postgres:password@db:5432/mydb?schema=public"
+      POSTGRES_URL_NO_SSL: "postgres://postgres:password@db:5432/mydb"
+      POSTGRES_PRISMA_URL: "postgres://postgres:password@db:5432/mydb?schema=public"
+      POSTGRES_URL_NON_POOLING: "postgres://postgres:password@db:5432/mydb?schema=public"
+      POSTGRES_HOST: "db"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_DATABASE: "mydb"
       REDIS_URL: "redis://redis:6379/0"
     volumes:
       - .:/app:delegated
@@ -39,9 +45,9 @@ services:
       - git:/app/.git
     ports:
       - "5173:5173"
-      - "5555:5555"  # for prisma client
-    restart: always  # コンテナが停止すると常に再起動
-    tty: true        # 疑似ターミナル (pseudo-TTY) を割り当て
+      - "5555:5555" # for prisma client
+    restart: always # コンテナが停止すると常に再起動
+    tty: true # 疑似ターミナル (pseudo-TTY) を割り当て
     stdin_open: true # サービス コンテナに標準入力を割り当てて実行するよう設定
     depends_on:
       - db

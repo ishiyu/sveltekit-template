@@ -1,44 +1,56 @@
+import type { TodoCreateType, TodoType } from "$lib/schema/TodoSchema";
 import { writable } from "svelte/store";
-
-export type Todo = {
-  id: number;
-  body: string;
-  completed: boolean;
-  createdAt: number;
-};
-
-let id = 0;
+import { TodoResource } from "../resources/TodoResource";
 
 function createStore() {
-  const todos = writable([] as Todo[]);
+  const todos = writable([] as TodoType[]);
 
   return {
     // $ で監視できるように subscribe を継承
     subscribe: todos.subscribe,
 
-    add(body: string) {
+    load() {
+      TodoResource.get().then((dbTodos) => {
+        todos.update(() => {
+          return [...dbTodos];
+        });
+      });
+    },
+    // 追加処理
+    async add(body: string) {
+      const inputTodo: TodoCreateType = { body };
+      const todo = await TodoResource.create(inputTodo);
       todos.update((todos) => {
-        const newTodos = [
-          ...todos,
-          { id: ++id, body, completed: false, createdAt: Date.now() },
-        ];
+        const newTodos = [...todos, todo];
         return newTodos;
       });
     },
-    delete(id: number) {
+
+    // 削除処理
+    async delete(id: number) {
+      await TodoResource.delete(id);
       todos.update((todos) => todos.filter((todo) => todo.id !== id));
     },
-    complete(id: number) {
+
+    // 完了処理
+    async complete(id: number) {
+      await TodoResource.complete(id);
       todos.update((todos) => {
-        let index = -1;
-        for (let i = 0; i < todos.length; i++) {
-          if (todos[i].id === id) {
-            index = i;
-            break;
-          }
+        const todo = todos.find((todo_1) => todo_1.id === id);
+        if (todo) {
+          todo.isCompleted = true;
         }
-        if (index !== -1) {
-          todos[index].completed = !todos[index].completed;
+        return todos;
+      });
+    },
+
+    // 未完了処理
+    async incomplete(id: number) {
+      await TodoResource.incomplete(id);
+      todos.update((todos) => {
+        const todo = todos.find((todo_1) => todo_1.id === id);
+        if (todo) {
+          todo.isCompleted = false;
         }
         return todos;
       });

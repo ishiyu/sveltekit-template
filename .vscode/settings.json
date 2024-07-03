@@ -11,5 +11,12 @@
   "[typescript]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
-  "cSpell.words": ["todos"]
+  "cSpell.words": [
+    "corepack",
+    "incompleted",
+    "Lefthook",
+    "psql",
+    "todos",
+    "valibot"
+  ]
 }

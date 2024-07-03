@@ -9,7 +9,7 @@ sveltekit を始めるときのテンプレートとして利用したい。
 - [x] Lefthook (nearly husky)
 - [x] svelte & sveltekit
 - [x] [prisma](https://github.com/prisma) with postgresql
-- [ ] request API with [ky](https://github.com/sindresorhus/ky)
+- [x] request API with [ky](https://github.com/sindresorhus/ky)
 - [ ] validate with [valibot](https://valibot.dev/)
 - [x] [biome](https://biomejs.dev/)
 - [x] [vite](https://ja.vitejs.dev/)
@@ -18,6 +18,9 @@ sveltekit を始めるときのテンプレートとして利用したい。
 - [x] deployment for Vercel
   - [x] setup [Vercel SpeedInsight](https://github.com/vercel/speed-insights)
   - [x] CD is auto setup when first deployed (when pushed main branch)
+
+- [ ] save local storage
+- [ ] input -> validation -> request -> | -> validation -> execute db -> response
 
 ## Library update
 
@@ -58,6 +61,6 @@ pnpm run build
 ## Deploying Vercel
 
 First deploy is reference this site.
-https://qiita.com/Notta_Engineering/items/1db3a14be8caa9a63ab2
+<https://qiita.com/Notta_Engineering/items/1db3a14be8caa9a63ab2>
 
 And after pushing to the main branch, it is automatically deployed to Vercel.

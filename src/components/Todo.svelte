@@ -1,7 +1,16 @@
-<script>
+<script lang="ts">
   import { todoStore } from "$lib/client/stores/todoStore";
+  import type { TodoType } from "$lib/schema/TodoSchema";
 
-  export let todo;
+  export let todo: TodoType;
+
+  function toggleComplete(todoId: number, checked: boolean) {
+    if (checked) {
+      todoStore.complete(todoId);
+    } else {
+      todoStore.incomplete(todoId);
+    }
+  }
 </script>
 
 <li
@@ -10,12 +19,12 @@
   <input
       name="completed"
       type="checkbox"
-      checked={todo.completed}
-      on:change={() => todoStore.complete(todo.id)}
+      checked={todo.isCompleted}
+      on:change={() => toggleComplete(todo.id, !todo.isCompleted)}
       class="mr-2 form-checkbox h-5 w-5"
   />
-  <span class={`flex-1 text-gray-800 ${todo.completed ? 'line-through' : ''}`}>{todo.body}</span>
-  {#if todo.completed}
+  <span class={`flex-1 text-gray-800 ${todo.isCompleted ? 'line-through' : ''}`}>{todo.body}</span>
+  {#if todo.isCompleted}
       <button
           type="button"
           class="text-sm bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"

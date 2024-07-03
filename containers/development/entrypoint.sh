@@ -10,7 +10,8 @@ pnpm i --frozen-lockfile --ignore-scripts
 # Please try `npm i` again after removing both package-lock.json and node_modules directory.
 # pnpm add -O @rollup/rollup-linux-x64-gnu
 
-# pnpm run generate
+# prisma client code を再生成
+pnpm prisma generate --schema ./prisma/schema.prisma
 
 # Then exec the container's main process (what's set as CMD in the Dockerfile).
 exec "$@"

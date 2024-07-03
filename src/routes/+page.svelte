@@ -1,7 +1,12 @@
 <script>
   import { todoStore } from '$lib/client/stores/todoStore';
+  import { onMount } from "svelte";
   import Todo from '../components/Todo.svelte';
   import TodoForm from '../components/TodoForm.svelte';
+
+  onMount(() => {
+    todoStore.load();
+  });
 </script>
 
 <main>

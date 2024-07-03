@@ -5,6 +5,7 @@
     "source.addMissingImports": "explicit",
     "source.organizeImports.biome": "explicit"
   },
+  "typescript.tsserver.experimental.enableProjectDiagnostics": true,
   "[javascript]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
@@ -12,11 +13,13 @@
     "editor.defaultFormatter": "biomejs.biome"
   },
   "cSpell.words": [
+    "biomejs",
     "corepack",
     "incompleted",
     "Lefthook",
     "psql",
     "todos",
+    "Vali",
     "valibot"
   ]
 }

@@ -30,6 +30,25 @@
       "node": {
         "enableDebugging": true
       }
+    },
+    {
+      "type": "shell",
+      "label": "tsc watch",
+      "command": "./node_modules/.bin/tsc",
+      "args": [
+        "--watch"
+      ],
+      "presentation": {
+        "echo": true,
+        "reveal": "never",
+        "focus": false,
+        "panel": "shared"
+      },
+      "isBackground": true,
+      "problemMatcher": "$tsc-watch",
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
     }
   ]
 }

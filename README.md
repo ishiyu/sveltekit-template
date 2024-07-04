@@ -20,7 +20,7 @@ sveltekit を始めるときのテンプレートとして利用したい。
   - [x] CD is auto setup when first deployed (when pushed main branch)
   - [x] auto migrate to Vercel Postgres
 
-- [ ] save local storage
+- [x] save local storage
 - [x] input -> validation -> request -> | -> validation -> execute db -> response
 
 ## Library update

@@ -1,11 +1,12 @@
 <script lang="ts">
+    import { localStorage } from "$lib/client/stores/localStorage";
   import { todoStore } from "$lib/client/stores/todoStore";
   import { TodoCreateSchema } from "$lib/schema/TodoSchema";
   import * as v from "valibot";
 
-  const inputTodo = { body: '' };
   const handleSubmit = async () => {
     try {
+      const inputTodo = { body: $localStorage.body };
       const validData = v.parse(TodoCreateSchema, inputTodo);
       await todoStore.add(validData.body);
       // 消しておく
@@ -22,7 +23,7 @@
       <input
           type="text"
           name="todo"
-          bind:value={inputTodo.body}
+          bind:value={$localStorage.body}
           placeholder="What's on your mind?"
           class="appearance-none shadow-sm border border-gray-200 p-2 focus:outline-none focus:border-gray-500 rounded-lg"
       />

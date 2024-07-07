@@ -34,8 +34,8 @@
   },
   // for errorlenz
   "errorLens.excludeBySource": ["cSpell"], // 非表示にしたいエラーの拡張機能
-  "errorLens.gutterIconsEnabled": true,    // 左にIconを表示するか
-  "errorLens.gutterIconSet": "emoji",      // iconに絵文字を設定する
+  "errorLens.gutterIconsEnabled": true, // 左にIconを表示するか
+  "errorLens.gutterIconSet": "emoji", // iconに絵文字を設定する
   // 絵文字の設定を独自の設定に変更する
   "errorLens.gutterEmoji": {
     "error": "💀",
@@ -106,10 +106,7 @@
     }
   },
   // スペルチェック
-  "cSpell.ignorePaths": [
-    ".vscode",
-    ".devcontainer/devcontainer.json",
-  ],
+  "cSpell.ignorePaths": [".vscode", ".devcontainer/devcontainer.json"],
   "cSpell.words": [
     "biomejs",
     "corepack",

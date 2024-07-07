@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { todoStore } from "$lib/client/stores/todoStore";
-  import type { TodoType } from "$lib/schema/TodoSchema";
+import { todoStore } from "$lib/client/stores/todoStore";
+import type { TodoType } from "$lib/schema/TodoSchema";
 
-  export let todo: TodoType;
+export let todo: TodoType;
 
-  function toggleComplete(todoId: number, checked: boolean) {
-    if (checked) {
-      todoStore.complete(todoId);
-    } else {
-      todoStore.incomplete(todoId);
-    }
+function toggleComplete(todoId: number, checked: boolean) {
+  if (checked) {
+    todoStore.complete(todoId);
+  } else {
+    todoStore.incomplete(todoId);
   }
+}
 </script>
 
 <li

@@ -1,20 +1,20 @@
 <script lang="ts">
-    import { localStorage } from "$lib/client/stores/localStorage";
-  import { todoStore } from "$lib/client/stores/todoStore";
-  import { TodoCreateSchema } from "$lib/schema/TodoSchema";
-  import * as v from "valibot";
+import { localStorage } from "$lib/client/stores/localStorage";
+import { todoStore } from "$lib/client/stores/todoStore";
+import { TodoCreateSchema } from "$lib/schema/TodoSchema";
+import * as v from "valibot";
 
-  const handleSubmit = async () => {
-    try {
-      const inputTodo = { body: $localStorage.body };
-      const validData = v.parse(TodoCreateSchema, inputTodo);
-      await todoStore.add(validData.body);
-      // 消しておく
-      inputTodo.body = '';
-    } catch (e) {
-        if (v.isValiError(e)) alert(e.message);
-    }
-  };
+const handleSubmit = async () => {
+  try {
+    const inputTodo = { body: $localStorage.body };
+    const validData = v.parse(TodoCreateSchema, inputTodo);
+    await todoStore.add(validData.body);
+    // 消しておく
+    inputTodo.body = "";
+  } catch (e) {
+    if (v.isValiError(e)) alert(e.message);
+  }
+};
 </script>
 
 <form class="my-6 mx-3" on:submit|preventDefault={handleSubmit}>

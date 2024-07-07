@@ -3,6 +3,6 @@
     // Yaml
     "redhat.vscode-yaml",
     // JS/CSS Formatter
-    "biomejs.biome",
-  ],
+    "biomejs.biome"
+  ]
 }

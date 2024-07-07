@@ -17,6 +17,10 @@
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "biomejs.biome"
   },
+  "[svelte]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "biomejs.biome"
+  },
   // YAML
   "yaml.format.enable": true,
   "[yaml][dockercompose][github-actions-workflow]": {

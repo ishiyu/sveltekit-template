@@ -1,20 +1,120 @@
 {
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
+  "editor.formatOnPaste": false,
+  "editor.formatOnType": false,
   "editor.codeActionsOnSave": {
     "quickfix.biome": "explicit",
     "source.addMissingImports": "explicit",
     "source.organizeImports.biome": "explicit"
   },
+  // JS / TS
   "typescript.tsserver.experimental.enableProjectDiagnostics": true,
   "[javascript]": {
+    "editor.formatOnSave": true,
     "editor.defaultFormatter": "biomejs.biome"
   },
   "[typescript]": {
+    "editor.formatOnSave": true,
     "editor.defaultFormatter": "biomejs.biome"
   },
+  // YAML
+  "yaml.format.enable": true,
+  "[yaml][dockercompose][github-actions-workflow]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml",
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true,
+    "editor.insertSpaces": true,
+    "files.insertFinalNewline": true,
+    "editor.autoIndent": "advanced",
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": false,
+      "strings": true
+    }
+  },
+  // for errorlenz
+  "errorLens.excludeBySource": ["cSpell"], // 非表示にしたいエラーの拡張機能
+  "errorLens.gutterIconsEnabled": true,    // 左にIconを表示するか
+  "errorLens.gutterIconSet": "emoji",      // iconに絵文字を設定する
+  // 絵文字の設定を独自の設定に変更する
+  "errorLens.gutterEmoji": {
+    "error": "💀",
+    "warning": "😱",
+    "info": "📌",
+    "hint": "💡"
+  },
+  // カスタムタグの設定
+  "todo-tree.general.tags": [
+    "HACK",
+    "FIXME",
+    "TODO",
+    "XXX",
+    "REVIEW",
+    "OPTIMIZE",
+    "CHANGED",
+    "NOTE",
+    "WARNING"
+  ],
+  // タグのデフォルトの色の設定
+  "todo-tree.highlights.defaultHighlight": {
+    "foreground": "#000000",
+    "background": "#2C7CFF",
+    "iconColor": "#24ff41",
+    "opacity": 45
+  },
+  // タグごとの色の設定
+  "todo-tree.highlights.customHighlight": {
+    "HACK": {
+      "icon": "zap",
+      "background": "#e5d411",
+      "iconColor": "#e5d411"
+    },
+    "FIXME": {
+      "icon": "flame",
+      "background": "#f11e1e",
+      "iconColor": "#f11e1e"
+    },
+    "TODO": {
+      "icon": "check-circle"
+    },
+    "XXX": {
+      "icon": "x-circle",
+      "background": "#f8831d",
+      "iconColor": "#f8831d"
+    },
+    "REVIEW": {
+      "icon": "pin",
+      "iconColor": "#8441f1"
+    },
+    "OPTIMIZE": {
+      "icon": "rocket",
+      "background": "#f8831d",
+      "iconColor": "#f8831d"
+    },
+    "CHANGED": {
+      "icon": "issue-reopened",
+      "iconColor": "#003cff"
+    },
+    "NOTE": {
+      "icon": "thumbsup",
+      "iconColor": "#be6e2d"
+    },
+    "WARNING": {
+      "icon": "alert",
+      "background": "#f11e1e",
+      "iconColor": "#f11e1e"
+    }
+  },
+  // スペルチェック
+  "cSpell.ignorePaths": [
+    ".vscode",
+    ".devcontainer/devcontainer.json",
+  ],
   "cSpell.words": [
     "biomejs",
     "corepack",
+    "fuga",
+    "hoge",
     "incompleted",
     "Lefthook",
     "psql",

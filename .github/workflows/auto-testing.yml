@@ -97,6 +97,11 @@ jobs:
           pnpm install --frozen-lockfile
         timeout-minutes: 3
 
+      # tsc でエラーとなるため、生成フォルダを一旦全削除する
+      - name: delete .svelte-kit folder
+        run: |
+          rm -rf .svelte-kit
+
       - name: typescript type check
         run: |
           pnpm tsc

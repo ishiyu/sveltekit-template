@@ -3,16 +3,38 @@ name: "Auto Testing for sveltekit"
 on:
   push:
     branches-ignore:
-      - 'develop'
+      - "develop"
     paths:
-      - '.github/workflows/auto-testing.yml'
-      - 'src/**'
+      - ".github/workflows/auto-testing.yml"
+      - "src/**"
 
 permissions:
   id-token: write # OIDC を利用する際に必須
   contents: read # actions/cgheckout のために必要
 
 jobs:
+  prepare:
+    name: prepare test
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    services:
+      postgres:
+        # Docker Hubのイメージ
+        image: postgres
+        # postgresのパスワードを提供
+        env:
+          POSTGRES_USER: postgress
+          POSTGRES_PASSWORD: password
+        # postgresが起動するまで待つヘルスチェックの設定
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
   auto-testing:
     runs-on: ubuntu-latest
 
@@ -32,7 +54,7 @@ jobs:
           sudo sysctl -w vm.max_map_count=262144
 
       - uses: actions/checkout@v4
-      - run:  corepack enable pnpm
+      - run: corepack enable pnpm
 
       - name: Setup Node.js for use with actions
         uses: actions/setup-node@v4

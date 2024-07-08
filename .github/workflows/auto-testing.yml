@@ -108,7 +108,7 @@ jobs:
 
       - name: test with vitest
         run: |
-          pnpm test:ci:coverage
+          pnpm run test:ci:coverage
         timeout-minutes: 3
 
       # # slack 通知

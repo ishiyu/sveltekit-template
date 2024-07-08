@@ -1,5 +1,5 @@
 import prisma from "$lib/server/prisma";
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { GET, POST } from "./+server";
 
 //
@@ -7,6 +7,9 @@ import { GET, POST } from "./+server";
 //
 describe("api/todos", () => {
   beforeEach(async () => {
+    await prisma.todos.deleteMany();
+  });
+  afterEach(async () => {
     await prisma.todos.deleteMany();
   });
 

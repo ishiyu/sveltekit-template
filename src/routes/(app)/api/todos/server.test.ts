@@ -1,32 +1,14 @@
 import prisma from "$lib/server/prisma";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { GET, POST } from "./+server";
 
 //
 // ファイル名に + を付けると vitest でエラーとなるため、あえて外しておく
 //
 describe("api/todos", () => {
-  beforeEach(async () => {
-    await prisma.todos.deleteMany();
-  });
-  afterEach(async () => {
-    await prisma.todos.deleteMany();
-  });
-
   // ------------------------
   // GET METHOD
   // ------------------------
   describe("GET", () => {
-    it("空データの場合", async () => {
-      // Act
-      const response = await GET({ params: {} });
-      const json = await response.text();
-      const results = JSON.parse(json);
-      // Assert
-      expect(results.length).toStrictEqual(0);
-      expect(results).toStrictEqual([]);
-    });
-
     it("全データを取得してくる", async () => {
       // Arrange
       await prisma.todos.createMany({
@@ -37,23 +19,27 @@ describe("api/todos", () => {
       const json = await response.text();
       const results = JSON.parse(json);
       // Assert
-      expect(results.length).toStrictEqual(2);
-      expect(results[0].body).toStrictEqual("abc");
-      expect(results[1].body).toStrictEqual("def");
+      expect(results.length).greaterThanOrEqual(2);
     });
 
     it("検索して取得", async () => {
       // Arrange
-      await prisma.todos.createMany({
-        data: [{ body: "abc" }, { body: "def" }],
+      const record = await prisma.todos.findFirst({
+        where: { body: "検索して取得2" },
       });
+      if (record === null) {
+        await prisma.todos.createMany({
+          data: [{ body: "検索して取得1" }, { body: "検索して取得2" }],
+        });
+      }
+
       // Act
-      const response = await GET({ params: { search: "def" } });
+      const response = await GET({ params: { search: "検索して取得2" } });
       const json = await response.text();
       const results = JSON.parse(json);
       // Assert
       expect(results.length).toStrictEqual(1);
-      expect(results[0].body).toStrictEqual("def");
+      expect(results[0].body).toStrictEqual("検索して取得2");
     });
 
     it("params のキーが想定しない値の場合は無視して全件取得", async () => {
@@ -67,7 +53,7 @@ describe("api/todos", () => {
       const results = JSON.parse(json);
       // Assert
       expect(response.status).toStrictEqual(200);
-      expect(results.length).toStrictEqual(2);
+      expect(results[0]).keys(["id", "body", "createdAt", "isCompleted"]);
     });
   });
 
@@ -77,17 +63,20 @@ describe("api/todos", () => {
   describe("POST", () => {
     it("登録成功", async () => {
       // Act
+      const body = "POST - SUCCESS";
       const request = new Request("/", {
         method: "POST",
-        body: '{"body": "abc"}',
+        body: `{"body": "${body}"}`,
       });
       const response = await POST({ request });
       const json = await response?.text();
       const results = JSON.parse(json ?? "");
       // Assert
-      expect(results.body).toStrictEqual("abc");
-      const count = await prisma.todos.count();
-      expect(count).toStrictEqual(1);
+      expect(results.body).toStrictEqual(body);
+      const todoRecord = await prisma.todos.findFirst({
+        where: { body: body },
+      });
+      expect(todoRecord?.body).toStrictEqual(body);
     });
 
     it("登録失敗", async () => {

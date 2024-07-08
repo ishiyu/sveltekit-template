@@ -1,4 +1,4 @@
-name: "Auto Testing for sveltekit"
+name: "Auto Testing for svelte-kit"
 
 on:
   push:

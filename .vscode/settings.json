@@ -119,8 +119,12 @@
     "incompleted",
     "Lefthook",
     "psql",
+    "swapoff",
+    "testdb",
     "todos",
     "Vali",
-    "valibot"
+    "valibot",
+    "vite",
+    "vitest"
   ]
 }

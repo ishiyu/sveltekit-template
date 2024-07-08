@@ -7,6 +7,8 @@ export default defineConfig({
     host: true,
   },
   test: {
+    globals: true, // vitest の import が不要になる
+    globalSetup: "./vitest.global.ts",
     include: ["src/**/*.{test,spec}.{js,ts}"],
     environment: "happy-dom",
   },

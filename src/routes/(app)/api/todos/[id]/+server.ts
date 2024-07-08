@@ -1,6 +1,6 @@
 import prisma from "$lib/server/prisma";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { type RequestEvent, error, json } from "@sveltejs/kit";
+import { error, json } from "@sveltejs/kit";
 
 export async function PUT({
   params,
@@ -15,16 +15,22 @@ export async function PUT({
   if (!id) {
     return error(400, "id notfound");
   }
-
   const body = await request.json();
-  const todo = await prisma.todos.update({
-    where: { id: Number(id) },
-    data: {
-      body: body.body ?? undefined,
-      isCompleted: body.isCompleted ?? false,
-    },
-  });
-  return json(todo);
+
+  try {
+    const todo = await prisma.todos.update({
+      where: { id: Number(id) },
+      data: {
+        body: body.body ?? undefined,
+        isCompleted: body.isCompleted ?? false,
+      },
+    });
+    return json(todo);
+  } catch (e) {
+    if (e instanceof PrismaClientKnownRequestError) {
+      return error(400, "id notfound");
+    }
+  }
 }
 
 export async function DELETE({

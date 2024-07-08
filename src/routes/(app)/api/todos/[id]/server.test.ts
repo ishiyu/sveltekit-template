@@ -1,27 +1,21 @@
 import prisma from "$lib/server/prisma";
-import { beforeEach, describe, expect, it } from "vitest";
 import { DELETE, PUT } from "./+server";
 
 //
 // ファイル名に + を付けると vitest でエラーとなるため、あえて外しておく
 //
 describe("api/todos", () => {
-  beforeEach(async () => {
-    await prisma.todos.deleteMany();
-  });
-
   // ------------------------
   // PUT METHOD
   // ------------------------
   describe("PUT", () => {
-    it("登録成功", async () => {
+    it("更新成功", async () => {
       // Arrange
       const todoRecord = await prisma.todos.create({
         data: { body: "abc" },
       });
-
       // Act
-      const params = { id: todoRecord.id };
+      const params = { id: String(todoRecord.id) };
       const request = new Request(`/${todoRecord.id}`, {
         method: "PUT",
         body: '{"body": "123"}',
@@ -31,8 +25,10 @@ describe("api/todos", () => {
       const results = JSON.parse(json ?? "");
       // Assert
       expect(results.body).toStrictEqual("123");
-      const count = await prisma.todos.count();
-      expect(count).toStrictEqual(1);
+      const updatedRecord = await prisma.todos.findFirst({
+        where: { id: todoRecord.id },
+      });
+      expect(updatedRecord?.body).toStrictEqual("123");
     });
 
     it("id が存在しない", async () => {
@@ -52,14 +48,14 @@ describe("api/todos", () => {
       }
     });
 
-    it("登録失敗", async () => {
+    it("更新失敗", async () => {
       // Arrange
       const todoRecord = await prisma.todos.create({
         data: { body: "abc" },
       });
       try {
         // Act
-        const params = { id: todoRecord.id };
+        const params = { id: String(todoRecord.id) };
         const request = new Request(`/${todoRecord.id}`, {
           method: "PUT",
           body: '{"hoge": "fuga"}',
@@ -86,16 +82,18 @@ describe("api/todos", () => {
         data: { body: "abc" },
       });
       // Act
-      const params = { id: todoRecord.id };
+      const params = { id: String(todoRecord.id) };
       await DELETE({ params });
       // Assert
-      const count = await prisma.todos.count();
-      expect(count).toStrictEqual(0);
+      const deletedRecord = await prisma.todos.findFirst({
+        where: { id: todoRecord.id },
+      });
+      expect(deletedRecord).toBeNull();
     });
 
     it("削除失敗", async () => {
       // Arrange
-      await prisma.todos.create({
+      const todoRecord = await prisma.todos.create({
         data: { body: "abc" },
       });
       // Act
@@ -107,8 +105,10 @@ describe("api/todos", () => {
 
         // Assert
         expect(response.status).toStrictEqual(400);
-        const count = await prisma.todos.count();
-        expect(count).toStrictEqual(1);
+        const notDeletedRecord = await prisma.todos.findFirst({
+          where: { id: todoRecord.id },
+        });
+        expect(notDeletedRecord).keys(Object.keys(todoRecord));
       }
     });
   });

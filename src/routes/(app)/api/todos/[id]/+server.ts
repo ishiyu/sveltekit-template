@@ -1,18 +1,22 @@
 import prisma from "$lib/server/prisma";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { type RequestEvent, error, json } from "@sveltejs/kit";
 
-export async function PUT(requestEvent: RequestEvent) {
+export async function PUT({
+  params,
+  request,
+}: { params: PartialRecord<string, string>; request: Request }) {
   // const session = await requestEvent.locals.auth();
   // if (!session?.user?.id) {
   //   throw redirect(303, "/login");
   // }
 
-  const { id } = requestEvent.params;
+  const { id } = params;
   if (!id) {
-    throw error(400, "id がありません");
+    return error(400, "id notfound");
   }
 
-  const body = await requestEvent.request.json();
+  const body = await request.json();
   const todo = await prisma.todos.update({
     where: { id: Number(id) },
     data: {
@@ -23,17 +27,24 @@ export async function PUT(requestEvent: RequestEvent) {
   return json(todo);
 }
 
-export async function DELETE(requestEvent: RequestEvent) {
+export async function DELETE({
+  params,
+}: { params: PartialRecord<string, string> }) {
   // const session = await requestEvent.locals.auth();
   // if (!session?.user?.id) {
   //   throw redirect(303, "/login");
   // }
 
-  const { id } = requestEvent.params;
+  const { id } = params;
   if (!id) {
     throw error(400, "id がありません");
   }
-
-  const todo = await prisma.todos.delete({ where: { id: Number(id) } });
-  return json(todo);
+  try {
+    const todo = await prisma.todos.delete({ where: { id: Number(id) } });
+    return json(todo);
+  } catch (e) {
+    if (e instanceof PrismaClientKnownRequestError) {
+      return error(400, "id notfound");
+    }
+  }
 }

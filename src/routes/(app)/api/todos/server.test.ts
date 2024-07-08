@@ -1,15 +1,18 @@
 import prisma from "$lib/server/prisma";
-import { afterEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { GET, POST } from "./+server";
 
 //
 // ファイル名に + を付けると vitest でエラーとなるため、あえて外しておく
 //
 describe("api/todos", () => {
-  afterEach(async () => {
+  beforeEach(async () => {
     await prisma.todos.deleteMany();
   });
 
+  // ------------------------
+  // GET METHOD
+  // ------------------------
   describe("GET", () => {
     it("空データの場合", async () => {
       // Act
@@ -20,6 +23,7 @@ describe("api/todos", () => {
       expect(results.length).toStrictEqual(0);
       expect(results).toStrictEqual([]);
     });
+
     it("全データを取得してくる", async () => {
       // Arrange
       await prisma.todos.createMany({
@@ -34,6 +38,7 @@ describe("api/todos", () => {
       expect(results[0].body).toStrictEqual("abc");
       expect(results[1].body).toStrictEqual("def");
     });
+
     it("検索して取得", async () => {
       // Arrange
       await prisma.todos.createMany({
@@ -47,6 +52,7 @@ describe("api/todos", () => {
       expect(results.length).toStrictEqual(1);
       expect(results[0].body).toStrictEqual("def");
     });
+
     it("params のキーが想定しない値の場合は無視して全件取得", async () => {
       // Arrange
       await prisma.todos.createMany({
@@ -62,6 +68,9 @@ describe("api/todos", () => {
     });
   });
 
+  // ------------------------
+  // POST METHOD
+  // ------------------------
   describe("POST", () => {
     it("登録成功", async () => {
       // Act
@@ -77,6 +86,7 @@ describe("api/todos", () => {
       const count = await prisma.todos.count();
       expect(count).toStrictEqual(1);
     });
+
     it("登録失敗", async () => {
       try {
         // Act

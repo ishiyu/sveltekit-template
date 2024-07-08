@@ -19,6 +19,7 @@ env:
   POSTGRES_PORT: 5432
   POSTGRES_PRISMA_URL: postgres://postgres:password@127.0.0.1:5432/testdb?schema=public
   POSTGRES_URL_NON_POOLING: postgres://postgres:password@127.0.0.1:5432/testdb?schema=public
+
 jobs:
   auto-testing:
     runs-on: ubuntu-latest
@@ -49,8 +50,6 @@ jobs:
     # https://blog.lacolaco.net/2021/06/github-actions-yarn-cache/
     env:
       NODE_OPTIONS: --max_old_space_size=4096
-      POSTGRES_PRISMA_URL: ${{ env.POSTGRES_PRISMA_URL }}
-      POSTGRES_URL_NON_POOLING: ${{ env.POSTGRES_URL_NON_POOLING }}
 
     steps:
       # https://github.com/marketplace/actions/setup-elasticsearch

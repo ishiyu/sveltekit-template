@@ -14,7 +14,7 @@
     "dev:migrate": "prisma migrate dev",
     "test": "pnpm test:migrate && dotenv -e .env.test -- vitest",
     "test:migrate": "dotenv -e .env.test -- prisma migrate reset -f",
-    "test:coverage": "vitest run --coverage",
+    "test:coverage": "prisma migrate reset -f && vitest run --coverage",
     "postinstall": "lefthook install"
   },
   "devDependencies": {

@@ -97,11 +97,10 @@ jobs:
           pnpm install --frozen-lockfile
         timeout-minutes: 3
 
-      # なぜか落ちるので一旦コメントアウト
-      # - name: typescript type check
-      #   run: |
-      #     pnpm tsc
-      #   timeout-minutes: 3
+      - name: svelte check
+        run: |
+          pnpm check
+        timeout-minutes: 3
 
       - name: lint&format with Biome
         run: pnpm biome ci ./src

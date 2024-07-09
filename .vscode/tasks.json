@@ -33,9 +33,9 @@
     },
     {
       "type": "shell",
-      "label": "tsc watch",
-      "command": "./node_modules/.bin/tsc",
-      "args": ["--watch"],
+      "label": "svelte-check watch",
+      "command": "./node_modules/.bin/svelte-check",
+      "args": [" --tsconfig", "./tsconfig.json", "--watch"],
       "presentation": {
         "echo": true,
         "reveal": "never",

@@ -1,7 +1,8 @@
 import type { TodoType } from "$lib/schema/TodoSchema";
 import { TodoCreateSchema } from "$lib/schema/TodoSchema";
+import { handleError } from "$lib/server/handleError";
 import prisma from "$lib/server/prisma";
-import { error, json } from "@sveltejs/kit";
+import { json } from "@sveltejs/kit";
 import * as v from "valibot";
 
 export async function GET({
@@ -16,8 +17,13 @@ export async function GET({
     ? { body: { contains: params.search } }
     : undefined;
   const orderBy: PartialRecord<keyof TodoType, "asc" | "desc"> = { id: "asc" };
-  const todos = await prisma.todos.findMany({ where, orderBy });
-  return json(todos);
+
+  try {
+    const todos = await prisma.todos.findMany({ where, orderBy });
+    return json(todos);
+  } catch (e: unknown) {
+    return handleError(e);
+  }
 }
 
 export async function POST({ request }: { request: Request }) {
@@ -35,10 +41,6 @@ export async function POST({ request }: { request: Request }) {
     });
     return json(todo);
   } catch (e: unknown) {
-    // valibot のエラーか判定します
-    if (v.isValiError(e)) {
-      console.error(`e: ${e}`);
-      error(400, e.message);
-    }
+    return handleError(e);
   }
 }

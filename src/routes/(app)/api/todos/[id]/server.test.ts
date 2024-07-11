@@ -43,8 +43,8 @@ describe("api/todos", () => {
       } catch (e) {
         const response = e as { status: number; body: { message: string } };
         // Assert
-        expect(response.status).toStrictEqual(400);
-        expect(response.body.message).toStrictEqual("id notfound");
+        expect(response.status).toStrictEqual(404);
+        expect(response.body.message).toStrictEqual("Not found");
       }
     });
 
@@ -104,7 +104,7 @@ describe("api/todos", () => {
         const response = e as { status: number; body: { message: string } };
 
         // Assert
-        expect(response.status).toStrictEqual(400);
+        expect(response.status).toStrictEqual(404);
         const notDeletedRecord = await prisma.todos.findFirst({
           where: { id: todoRecord.id },
         });

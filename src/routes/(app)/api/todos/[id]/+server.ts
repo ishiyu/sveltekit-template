@@ -1,5 +1,5 @@
+import { handleError } from "$lib/server/handleError";
 import prisma from "$lib/server/prisma";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { error, json } from "@sveltejs/kit";
 
 export async function PUT({
@@ -13,7 +13,7 @@ export async function PUT({
 
   const { id } = params;
   if (!id) {
-    return error(400, "id notfound");
+    throw error(404, "Not found");
   }
   const body = await request.json();
 
@@ -26,10 +26,8 @@ export async function PUT({
       },
     });
     return json(todo);
-  } catch (e) {
-    if (e instanceof PrismaClientKnownRequestError) {
-      return error(400, "id notfound");
-    }
+  } catch (e: unknown) {
+    return handleError(e);
   }
 }
 
@@ -48,9 +46,7 @@ export async function DELETE({
   try {
     const todo = await prisma.todos.delete({ where: { id: Number(id) } });
     return json(todo);
-  } catch (e) {
-    if (e instanceof PrismaClientKnownRequestError) {
-      return error(400, "id notfound");
-    }
+  } catch (e: unknown) {
+    return handleError(e);
   }
 }

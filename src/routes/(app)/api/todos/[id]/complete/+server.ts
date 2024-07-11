@@ -1,22 +1,29 @@
+import { handleError } from "$lib/server/handleError";
 import prisma from "$lib/server/prisma";
-import { type RequestEvent, error, json } from "@sveltejs/kit";
+import { error, json } from "@sveltejs/kit";
 
-export async function PUT(requestEvent: RequestEvent) {
+export async function PUT({
+  params,
+}: { params: PartialRecord<string, string> }) {
   // const session = await requestEvent.locals.auth();
   // if (!session?.user?.id) {
   //   throw redirect(303, "/login");
   // }
 
-  const { id } = requestEvent.params;
+  const { id } = params;
   if (!id) {
-    throw error(400, "id がありません");
+    throw error(404, "Not found");
   }
 
-  const todo = await prisma.todos.update({
-    where: { id: Number(id) },
-    data: {
-      isCompleted: true,
-    },
-  });
-  return json(todo);
+  try {
+    const todo = await prisma.todos.update({
+      where: { id: Number(id) },
+      data: {
+        isCompleted: true,
+      },
+    });
+    return json(todo);
+  } catch (e) {
+    return handleError(e);
+  }
 }

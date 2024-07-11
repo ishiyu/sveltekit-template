@@ -67,3 +67,18 @@ First deploy is reference this site.
 <https://qiita.com/Notta_Engineering/items/1db3a14be8caa9a63ab2>
 
 And after pushing to the main branch, it is automatically deployed to Vercel.
+
+## Duplicate to new repository
+
+```sh
+git clone https://github.com/ishiyu/sveltekit-template.git {new-folder-name}
+cd {new-folder-name}
+
+rm -rf .git
+git init
+git add ./*
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/ishiyu/daily-tracker.git
+git push -u origin main
+```

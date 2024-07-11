@@ -36,9 +36,9 @@
     "vitest": "^2.0.2"
   },
   "dependencies": {
-    "@prisma/client": "5.16.0",
+    "@prisma/client": "5.16.2",
     "@vercel/speed-insights": "^1.0.12",
     "ky": "^1.4.0",
-    "valibot": "^0.35.0"
+    "valibot": "^0.36.0"
   }
 }

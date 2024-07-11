@@ -8,8 +8,6 @@ export const TodoResource = {
   },
 
   async create(todo: TodoCreateType) {
-    console.log(todo);
-
     const promise = fetchApi.post("todos", { body: JSON.stringify(todo) });
     return await promise.json<TodoType>();
   },

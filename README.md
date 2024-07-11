@@ -14,6 +14,8 @@ sveltekit を始めるときのテンプレートとして利用したい。
 - [x] [biome](https://biomejs.dev/)
 - [x] [vite](https://ja.vitejs.dev/)
 - [ ] unit test with [vitest](https://vitest.dev/)
+  - [x] API Test
+  - [ ] Component Test
 - [x] github actions for CI
 - [x] deployment for Vercel
   - [x] setup [Vercel SpeedInsight](https://github.com/vercel/speed-insights)

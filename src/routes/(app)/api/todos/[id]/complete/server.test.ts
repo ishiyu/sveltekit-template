@@ -31,7 +31,7 @@ describe("api/todos/[id]/complete", () => {
     it("存在しない id を指定", async () => {
       // Act
       try {
-        const params = { id: 1234567 };
+        const params = { id: "1234567" };
         await PUT({ params });
       } catch (e) {
         const response = e as { status: number; body: { message: string } };
